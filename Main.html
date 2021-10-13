@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>使用 Google Sheets/Excel 當作資料庫</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+            $(function () {
+                $('#demo_select').change(function () {
+                    var selectedOption = $('#demo_select option:selected');
+                    var label = selectedOption.closest('optgroup').attr('label');
+                    var selectText = selectedOption.text();
+
+                    var length = $(this).find(':selected').text().length;
+
+                    if (length < 50) {
+                        $(this).find(':selected').text(label + ' - ' + selectText);
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container overflow-hidden">
+            <div class="row gx-5 align-items-center">
+                <div class="col">
+                    <div class="p-3">
+                        <img src="https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930_960_720.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3">
+                        <form>
+                            <!-- 姓名 -->
+                            <div class="mb-3">
+                                <label for="demo_name" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="demo_name">
+                            </div>
+
+                            <!-- 信箱 -->
+                            <div class="mb-3">
+                                <label for="demo_email" class="form-label">信箱</label>
+                                <input type="email" class="form-control" id="demo_email" placeholder="name@example.com">
+                            </div>
+
+                            <!-- 性別 -->
+                            <div class="mb-3">
+                                <label for="demo_radio" class="form-label me-3">性別</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="male" name="demo_radio" value="male" checked>
+                                    <label class="form-check-label" for="male">男性</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="female" name="demo_radio" value="female">
+                                    <label class="form-check-label" for="female">女性</label>
+                                </div>
+                            </div>
+
+                            <!-- 產品名稱 -->
+                            <div class="mb-3">
+                                <!-- <label for="demo_select" class="form-label me-3">產品名稱</label> -->
+                                <!-- <select class="u-full-width" id="demo_select">
+                                    <option value="0" selected disabled>請選擇</option>
+                                    <option value="cat">貓類</option>
+                                    <option value="dog">狗類</option>
+                                    <option value="bear">熊類</option>
+                                </select> -->
+                                <!-- <select class="form-select" id="demo_select">
+                                    <option value="0" selected disabled>請選擇</option>
+                                    <optgroup label="T-FORCE電競系列">
+                                      <option value="RGB DDR4桌上型記憶體">RGB DDR4桌上型記憶體</option>
+                                      <option value="DDR4桌上型記憶體">DDR4桌上型記憶體</option>
+                                      <option value="DDR4筆記型記憶體">DDR4筆記型記憶體</option>
+                                    </optgroup>
+                                    <optgroup label="T-CREATE創作者系列">
+                                      <option value="DDR4桌上型記憶體">DDR4桌上型記憶體</option>
+                                      <option value="DDR4筆記型記憶體">DDR4筆記型記憶體</option>
+                                    </optgroup>
+                                  </select> -->
+                                <select class="form-select" id="demo_select">
+                                    <option value="0" selected disabled>請選擇</option>
+                                    
+                                        <optgroup label="T-FORCE電競系列_電競記憶體">
+                                            <option value="T-FORCE電競系列_電競記憶體-RGB DDR4桌上型記憶體">RGB DDR4桌上型記憶體</option>
+                                            <option value="T-FORCE電競系列_電競記憶體-DDR4桌上型記憶體">DDR4桌上型記憶體</option>
+                                            <option value="T-FORCE電競系列_電競記憶體-DDR4筆記型記憶體">DDR4筆記型記憶體</option>
+                                        </optgroup>
+                                        <optgroup label="T-FORCE電競系列_SSD固態硬碟">
+                                          <option value="T-FORCE電競系列_SSD固態硬碟-2.5吋固態硬碟">2.5吋固態硬碟</option>
+                                          <option value="T-FORCE電競系列_SSD固態硬碟-可攜型固態硬碟">可攜型固態硬碟</option>
+                                          <option value="T-FORCE電競系列_SSD固態硬碟-M.2 固態硬碟">M.2 固態硬碟</option>
+                                          <option value="T-FORCE電競系列_SSD固態硬碟-聯名款">聯名款</option>
+                                        </optgroup>
+                                    
+                                    
+                                        <optgroup label="T-CREATE創作者系列_CLASSIC 系列">
+                                            <option value="T-CREATE創作者系列_CLASSIC 系列-DDR4桌上型記憶體">DDR4桌上型記憶體</option>
+                                            <option value="T-CREATE創作者系列_CLASSIC 系列-DDR4筆記型記憶體">DDR4筆記型記憶體</option>
+                                        </optgroup>
+                                        <optgroup label="T-CREATE創作者系列_EXPERT 系列">
+                                            <option value="T-CREATE創作者系列_EXPERT 系列-2.5吋固態硬碟">2.5吋固態硬碟</option>
+                                            <option value="T-CREATE創作者系列_EXPERT 系列-M.2 固態硬碟">M.2 固態硬碟</option>
+                                        </optgroup>
+                                    
+                                    
+                                  </select>
+                            </div>
+
+                            <!-- 詢問內容 -->
+                            <div class="mb-3">
+                                <label for="demo_textarea" class="form-label">詢問內容</label>
+                                <textarea class="form-control" id="demo_textarea" rows="3"></textarea>
+                            </div>
+
+                            <button type="button" id="submit" class="btn btn-primary">確認送出</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+            $(function () {
+                $('#submit').on('click', function() {
+                    
+                    // 姓名
+                    var name = $('#demo_name').val() || '未填寫';
+
+                    //信箱
+                    var email = $('#demo_email').val() || '未填寫';
+
+                    // 性別
+                    var sex = function () {
+                        var v;
+                        $('[name="demo_radio"]').each(function() {
+                            if($(this).prop('checked') === true) v = $(this).val();
+                        });
+                        return v;
+                    };
+
+                    // 產品名稱
+                    var cat = $('#demo_select').val() || '未填寫';
+
+                    // 內容
+                    var msg = $('#demo_textarea').val() || '未填寫';
+
+                    // post
+                    var data = {
+                        'entry.860025531': name,
+                        'entry.105193318': email,
+                        'entry.1722749817': sex(),
+                        'entry.1964981385': cat,
+                        'entry.1683711166': msg
+                    };
+            
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScOpXi3qlhzj67BDMrmsAr0SmFbbk2I3oQqSO_9tDvugdY2qg/formResponse',
+                        data: data,
+                        contentType: 'application/json',
+                        dataType: 'jsonp',
+                        complete: function() {
+                        alert('資料已送出！');
+                        }
+                    });
+
+
+
+
+                });
+            });
+        </script>
+    </body>
+</html>
+
