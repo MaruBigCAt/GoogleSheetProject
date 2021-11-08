@@ -125,6 +125,7 @@
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script>
+            //驗證表單內容格式
             $(function () {
                 $('#submit').on('click', function() {
                     
@@ -149,7 +150,7 @@
                     // 內容
                     var msg = $('#demo_textarea').val() || '未填寫';
 
-                    // post
+                    // post (數值對應欄位)
                     var data = {
                         'entry.860025531': name,
                         'entry.105193318': email,
@@ -160,6 +161,7 @@
             
                     $.ajax({
                         type: 'POST',
+                        // google 表單網址
                         url: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScOpXi3qlhzj67BDMrmsAr0SmFbbk2I3oQqSO_9tDvugdY2qg/formResponse',
                         data: data,
                         contentType: 'application/json',
